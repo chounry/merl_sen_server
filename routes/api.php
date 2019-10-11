@@ -23,3 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/product/list', 'ProductController@getAll');
 Route::post('/product/detail', 'ProductController@getProductDetail');
 
+
+// category
+Route::get('/category/list', 'CategoryController@getAllCategory');
+Route::post('/cart/add', 'CartController@insertCart');

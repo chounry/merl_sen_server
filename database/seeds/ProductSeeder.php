@@ -97,12 +97,20 @@ class ProductSeeder extends Seeder
                         'p_id' => $pro_id
                     ]);
 
-                    $numOfCateCouldHave = rand(1, 3);
+                    $numOfCateCouldHave = rand(1, 3);  
+                    $randomArrTmp = [];
                     $categories = DB::table('categories')->get();
-                    DB::table('category_product')->insert([
-                        'cat_id' => $categories[rand(0, count($categories)-1)]->id,
-                        'p_id' => $pro_id
-                    ]);
+                    for($j = 0; $j < $numOfCateCouldHave; $j++){
+                        $random = 1;
+                        while(in_array($random, $randomArrTmp)){
+                            $random = rand(0, count($categories)-1);
+                        }
+                        $randomArrTmp[] = $random;
+                        DB::table('category_product')->insert([
+                            'cat_id' => $categories[$random]->id,
+                            'p_id' => $pro_id
+                        ]);
+                    }
                 }
             }
         }
