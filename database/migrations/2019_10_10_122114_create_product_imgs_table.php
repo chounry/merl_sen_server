@@ -15,7 +15,7 @@ class CreateProductImgsTable extends Migration
     {
         Schema::create('product_imgs', function (Blueprint $table) {
             // product_imgs id length : 30
-            $table->string('id', 30);
+            $table->string('id', 30)->unique();;
             $table->string('url', 200);
         
             $table->string('p_id', 30);
