@@ -15,7 +15,7 @@ class CreateUserTypesTable extends Migration
     {
         Schema::create('user_types', function (Blueprint $table) {
             // user_type id length : 5
-            $table->string('id', 5);
+            $table->string('id', 5)->unique();;
             $table->string('name');
         });
     }
