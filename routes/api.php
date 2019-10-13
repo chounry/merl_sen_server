@@ -17,12 +17,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+// user
+Route::post('/user/register', 'MyAuth\RegisterController@register');
+Route::post('user/login', 'MyAuth\LoginController@login');
 
 // product
 Route::get('/product/list', 'ProductController@getAll');
 Route::post('/product/detail', 'ProductController@getProductDetail');
-
 
 // category
 Route::get('/category/list', 'CategoryController@getAllCategory');

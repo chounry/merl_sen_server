@@ -15,7 +15,7 @@ class ProductController extends Controller
         $products = Products::select('title','sale_price', 'in_stock_amount','id')->get();
         $respone = array();
         foreach($products as $pro){
-            $pro['imgUrl'] = ProductImgs::where('p_id', $pro->id)->first()->url;
+            $pro['imgs'] = array(ProductImgs::where('p_id', $pro->id)->first()->url);
             $respone[] = $pro;
         }
         return response()->json($respone);
@@ -23,13 +23,18 @@ class ProductController extends Controller
 
     public function getProductDetail(Request $request){
         $product = Products::find($request->pro_id);
-        $productImgs = ProductImgs::select('url', 'id')->where('p_id', $product->id)->get(); // get imgs of only product
+        $productImgs = ProductImgs::select('url')->where('p_id', $product->id)->get();
+        $arrayOfImg = [];
+        foreach($productImgs as $proImg){
+            $arrayOfImg[] = $proImg->url;
+        }
+        // get imgs of only product
         $responsePro = [
             'title' => $product->title,
             'description' => $product->description,
             'sale_price' => $product->sale_price,
             'in_stock_amount' => $product->in_stock_amount,
-            'imgs' => $productImgs
+            'imgs' => $arrayOfImg
         ];
         $productCategories = $product->categories()->get();
 
@@ -47,7 +52,7 @@ class ProductController extends Controller
                     'description' => $pro->description,
                     'sale_price' => $pro->sale_price,
                     'in_stock_amount' => $pro->in_stock_amount,
-                    'img' => $productImgs->url
+                    'imgs' => array($productImgs->url)
                 ];
                 $relatedProducts[] = $eachRelatedPro;
             }

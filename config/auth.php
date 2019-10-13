@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -42,7 +43,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -68,7 +69,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Users::class,
         ],
 
         // 'users' => [
