@@ -84,4 +84,8 @@ class LoginController extends Controller
         $accessToken->revoke();
         return response()->json(["nothing"=>"something"],204);
     }
+
+    public function unauthenticated(){
+        return response()->json(['code'=>401,'message'=>'unauthenticated']);
+    }
 }

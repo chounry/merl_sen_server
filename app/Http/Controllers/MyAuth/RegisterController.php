@@ -23,30 +23,28 @@ class RegisterController extends Controller
     }
 
     public function register(Request $request){
-        Log::info("asdf");
 
         $this->validate($request,[
             'full_name'=>'required',
             'password'=>'required|min:6|confirmed',
             'phone' => 'required|min:9||unique:users'
         ]);
-        Log::info("register 2");
-        $user_id = Str::random(50);
+
+        $user_id = Str::random(20);
         $user = Users::find($user_id);
         while($user != null){
-            $user_id = Str::random(50);
+            $user_id = Str::random(20);
             $user = Users::find($user_id);
         }
-        Log::info("register 3");
 
         $user = Users::create([
-            'id' => Str::random(50),
+            'id' => $user_id,
             'full_name' => $request->full_name,
             'phone' => $request->phone,
             'password' => \bcrypt($request->password),
             'user_type_id' => UserTypes::all()[1]->id
         ]);
-        Log::info("register 4");
+
         $params = [
             'grant_type' => 'password',
             'client_id' => $this->client->id,
@@ -55,13 +53,11 @@ class RegisterController extends Controller
             'password' => $request->password,
             'scope' => '*'
         ];
-        Log::info("register 5");
-        Log::info($params);
 
         $request->request->add($params);
 
         $proxy = Request::create('oauth/token','POST');
-        Log::info($proxy);
+
         return Route::dispatch($proxy);
     }
 
