@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeyToUsersTable extends Migration
+class CreateOauthPersonalAccessClientsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddForeignKeyToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreign('user_type_id')->references('id')->on('user_types')->onDelete('set null');
+        Schema::create('oauth_personal_access_clients', function (Blueprint $table) {
+            $table->increments('id');
+            $table->uuid('client_id')->index();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddForeignKeyToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['user_type_id']);
-        });
+        Schema::dropIfExists('oauth_personal_access_clients');
     }
 }

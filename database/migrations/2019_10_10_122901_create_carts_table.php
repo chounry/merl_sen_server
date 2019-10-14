@@ -14,8 +14,9 @@ class CreateCartsTable extends Migration
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->date('created_date');
-            $table->string('amount');
+            $table->string('id', 20)->primary();
+            $table->dateTime('created_date');
+            $table->integer('amount');
 
             $table->string('p_id', 30);
             $table->string('user_id', 20);
