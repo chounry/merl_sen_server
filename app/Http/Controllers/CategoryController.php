@@ -10,6 +10,7 @@ class CategoryController extends Controller
 {   
     public function getAllCategory(){
         $categories = Categories::all();
-        return response()->json($categories);
+        $category = ['data' => $categories];
+        return response()->json($category);
     }
 }

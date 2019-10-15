@@ -19,37 +19,18 @@ class LoginController extends Controller
         $this->client = Client::find(2);
     }
 
-
-    public function get_user(Request $request){
-        $response = Auth::user();
-        $response->img_loc = "/storage/users/".$response->profile_img;
-        return response()->json(Auth::user());
-    }
-
-
     public function login(Request $request){
-        $this->validate($request,[
-            'phone' => 'required',
-            'password' => 'required'
-        ]);
-        
-        $params = [
-            'grant_type' => 'password',
-            'client_id' => $this->client->id,
-            'client_secret' => $this->client->secret,
-            'username' => $request->phone,
-            'password' => $request->password,
-            'scope' => '*'
-        ];
-
-        $request->request->add($params);
-
-        $proxy = Request::create('oauth/token','POST');
-        
-        return Route::dispatch($proxy);
+        if (auth()->attempt(['phone' => $request->phone, 'password' => $request->password])){ 
+            $user = Auth::user();
+            $token =  $user->createToken('MyApp')-> accessToken;
+            return [
+                'msg'=>true, 
+                'user_id'=>Auth::id(),
+                'token'=>$token];
+        } else {
+            return response()->json(['token'=>'no access token','msg'=>'Incorrect email or password'], 401);
+        }
     }
-
-
 
     public function refresh(Request $request){
         $this->validate($request,[

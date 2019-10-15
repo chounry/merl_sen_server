@@ -20,6 +20,14 @@ class CartController extends Controller
         if(!$pro->exists())
             return response()->json(['code'=>'500', 'message'=>"Product doesn't exists"]);
 
+        $cart = Carts::where('p_id', $pro->id)->where('user_id',Auth::user()->id)->first();
+        if($cart != null){
+            $cart->amount = $cart->amount + $request->amount;
+            $cart->created_date = date('Y-m-d H:i:s');
+            $cart->save();
+            return response()->json(['code' => 200,'message'=> 'old cart']); 
+        }
+
         $cart_id = Str::random(20);
         $cart = Carts::find($cart_id);
         while($cart != null){
@@ -29,7 +37,7 @@ class CartController extends Controller
 
         date_default_timezone_set("Asia/Bangkok");
         Auth::user()->carts()->attach($pro->id, ['amount'=>$request->amount, 'created_date'=> date('Y-m-d H:i:s'), 'id' => $cart_id]);
-        return response()->json(['code' => 200]);
+        return response()->json(['code' => 200, 'message' => 'new cart']);
     }
 
     public function getAllCarts(){

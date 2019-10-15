@@ -30,6 +30,7 @@ class ProductController extends Controller
         }
         // get imgs of only product
         $responsePro = [
+            'id' => $product->id,
             'title' => $product->title,
             'description' => $product->description,
             'sale_price' => $product->sale_price,
@@ -45,8 +46,12 @@ class ProductController extends Controller
         foreach($productCategories as $proCat){
             $products = Categories::find($proCat->id)->products()->take(5)->get();
             foreach($products as $pro){
-                $productImgs = ProductImgs::select('url')->where('p_id', $pro->id)->first(); // get imgs of only product
 
+                if($pro->id != $product->id)
+                    continue;
+
+                $productImgs = ProductImgs::select('url')->where('p_id', $pro->id)->first(); // get imgs of only product
+                
                 $eachRelatedPro = [
                     'title' => $pro->title,
                     'description' => $pro->description,
@@ -60,10 +65,37 @@ class ProductController extends Controller
         
         $respone['product'] = $responsePro;
         $respone['related'] = $relatedProducts;
-         
+        
         if($product){
             return response()->json($respone);
         }
+        
         return response()->json(['code'=> 404, 'message'=> 'product does not exist']);
+    }
+
+
+    public function getProductByCategory(Request $reqeust){
+        $category = Categories::find($reqeust->cate_id);
+        if($category == null){
+            return response()->json(['message'=>'category does not exists', 'code' => 500]);
+        }
+        
+        $products = $category->products()->get();
+        $newProducts = [];
+        Log::info($newProducts);
+
+        foreach($products as $pro){
+            $img = ProductImgs::where('p_id', $pro->id)->first();
+            $newPro = [
+                'id' => $pro->id,
+                'title' => $pro->title,
+                'in_stock_amount' => $pro->in_stock_amount,
+                'sale_price' => $pro->sale_price,
+                'imgs' => array($img->url)
+            ];
+            $newProducts[] = $newPro;
+        }
+        $response = array('data'=>$newProducts);
+        return response()->json($response);
     }
 }

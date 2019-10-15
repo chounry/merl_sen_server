@@ -28,10 +28,7 @@ Route::get('user/unauthenticated', 'MyAuth\LoginController@unauthenticated')->na
 // product
 Route::get('/product/list', 'ProductController@getAll');
 Route::post('/product/detail', 'ProductController@getProductDetail');
+Route::post('/category/product', 'ProductController@getProductByCategory');
 
 // category
 Route::get('/category/list', 'CategoryController@getAllCategory');
-
-
-
-
