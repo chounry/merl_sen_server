@@ -19,6 +19,11 @@ class LoginController extends Controller
         $this->client = Client::find(2);
     }
 
+    public function getUser(Request $request){
+        $response = Auth::user();
+        return response()->json(Auth::user());
+    }
+
     public function login(Request $request){
         if (auth()->attempt(['phone' => $request->phone, 'password' => $request->password])){ 
             $user = Auth::user();
@@ -26,6 +31,9 @@ class LoginController extends Controller
             return [
                 'msg'=>true, 
                 'user_id'=>Auth::id(),
+                'img' => '/storage/'.Auth::user()->profile_img,
+                'phone' => Auth::user()->phone,
+                'full_name' => Auth::user()->full_name,
                 'token'=>$token];
         } else {
             return response()->json(['token'=>'no access token','msg'=>'Incorrect email or password'], 401);

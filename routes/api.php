@@ -14,10 +14,17 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->group(function(){
+
+    // user
+    Route::post('/user/get','MyAuth\LoginController@getUser');
+    
     // cart
     Route::post('/cart/add', 'CartController@insertCart');
     Route::post('/cart/list', 'CartController@getAllCarts');
     Route::post('/cart/remove', 'CartController@removeCart');
+    Route::post('/product/buy-with-cart', 'CartController@buyWithCarts');
+    Route::post('/product/buy-with-product', 'CartController@buyWithProduct');
+
 });
 
 // user

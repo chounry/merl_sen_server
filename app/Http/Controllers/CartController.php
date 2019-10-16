@@ -11,6 +11,7 @@ use App\Products;
 use App\Users;
 use App\ProductImgs;
 use App\Carts;
+use App\Buyings;
 
 class CartController extends Controller
 {
@@ -69,5 +70,56 @@ class CartController extends Controller
             $cart->delete();
         }
         return response()->json(['code' => 200]);
+    }
+
+    public function buyWithCarts(Request $request){
+        $u = Auth::user();
+        foreach($request->carts_id as $cart_id){
+            $cart = Carts::find($cart_id);
+
+            $buyingId = Str::random(30);
+            $buying = Buyings::find($buyingId);
+            while($buying != null){
+                $buyingId = Str::random(30);
+                $buying = Buyings::find($buyingId);
+            }
+
+            $u->buyings()->attach($cart->id,[
+                'address'=> $request->address,
+                'phone'=> $request->phone,
+                'id'=> $buyingId, 
+                'created_date'=> date('Y-m-d H:i:s')
+                ]);
+        }
+        return response()->json(['code'=>200,'message'=>'success']);
+    }
+
+    public function buyWithProduct(Request $request){
+        $u = Auth::user();
+
+        $buyingId = Str::random(30);
+        $buying = Buyings::find($buyingId);
+        while($buying != null){
+            $buyingId = Str::random(30);
+            $buying = Buyings::find($buyingId);
+        }
+
+        $cart_id = Str::random(20);
+        $cart = Carts::find($cart_id);
+        while($cart != null){
+            $cart_id = Str::random(20);
+            $cart = Carts::find($cart_id);
+        }
+
+        $u->carts()->attach($request->pro_id, ['amount'=>$request->amount, 'created_date'=> date('Y-m-d H:i:s'), 'id' => $cart_id]);
+
+        $u->buyings()->attach($cart_id,[
+            'address'=> $request->address,
+            'phone'=> $request->phone,
+            'id'=> $buyingId, 
+            'created_date'=> date('Y-m-d H:i:s')
+        ]);
+
+        return response()->json(['code'=>200,'message'=>'success']);
     }
 }

@@ -42,7 +42,7 @@ class RegisterController extends Controller
             'full_name' => $request->full_name,
             'phone' => $request->phone,
             'password' => \bcrypt($request->password),
-            'user_type_id' => UserTypes::all()[1]->id
+            'user_type_id' => DB::table('user_types')->where('name', 'Seller')->first()->id
         ]);
 
         $params = [

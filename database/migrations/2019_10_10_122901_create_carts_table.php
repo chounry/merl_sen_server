@@ -16,7 +16,7 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->string('id', 20)->primary();
             $table->dateTime('created_date');
-            $table->boolean('bought')->default('false');
+            $table->boolean('bought')->default(false);
             $table->integer('amount');
 
             $table->string('p_id', 30);

@@ -25,4 +25,8 @@ class Users extends Authenticatable
     public function findForPassport($username) {
         return $this->where('phone', $username)->first();
     }
+
+    public function buyings(){
+        return $this->belongsToMany('App\Carts', 'buyings', 'user_id', 'cart_id')->withPivot('address', 'phone');
+    }
 }
