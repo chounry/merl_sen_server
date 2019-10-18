@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use App\Products;
 use App\ProductImgs;
@@ -97,5 +98,14 @@ class ProductController extends Controller
         }
         $response = array('data'=>$newProducts);
         return response()->json($response);
+    }
+
+    public function getListProductBySeller(Request $request){
+        $products = Products::where('user_id',Auth::user()->id)->get();
+        $products = [
+            'code' => 200,
+            'data' => $products,
+        ];
+        return response()->json($products);
     }
 }
