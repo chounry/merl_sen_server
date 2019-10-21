@@ -17,12 +17,12 @@ class CartController extends Controller
 {
     public function insertCart(Request $request){
         $pro = Products::find($request->pro_id);
-
+  
         if(!$pro->exists())
             return response()->json(['code'=>'500', 'message'=>"Product doesn't exists"]);
 
         $cart = Carts::where('p_id', $pro->id)->where('user_id',Auth::user()->id)->first();
-        if($cart != null){
+        if($cart != null && $cart->bought == 0){
             $cart->amount = $cart->amount + $request->amount;
             $cart->created_date = date('Y-m-d H:i:s');
             $cart->save();
@@ -32,12 +32,18 @@ class CartController extends Controller
         $cart_id = Str::random(20);
         $cart = Carts::find($cart_id);
         while($cart != null){
-            $cart_id = Str::random(20);
+            $cart_id = Str::random(20); 
             $cart = Carts::find($cart_id);
         }
 
         date_default_timezone_set("Asia/Bangkok");
-        Auth::user()->carts()->attach($pro->id, ['amount'=>$request->amount, 'created_date'=> date('Y-m-d H:i:s'), 'id' => $cart_id]);
+        Auth::user()->carts()->attach($pro->id, [
+            'amount'=>$request->amount,
+            'created_date'=> date('Y-m-d H:i:s'),
+            'id' => $cart_id,
+            'unit_sale_price' => $pro->sale_price
+        ]);
+            
         return response()->json(['code' => 200, 'message' => 'new cart']);
     }
 
@@ -46,13 +52,15 @@ class CartController extends Controller
         $reponses = [];
         foreach($products as $pro){
             $proImgs = array(ProductImgs::select('url')->where('p_id', $pro->id)->first()->url);
-
+            if($pro->pivot->bought != 0){
+                continue;
+            }
             $newPro = [
                 'pro_id'=> $pro->id,
                 'sale_price' => $pro->sale_price,
                 'title' => $pro->title,
                 'description' => $pro->description,
-                'in_stock_amount'=>$pro->in_stock_amount,
+                'in_stock_amount'=> $pro->in_stock_amount,
                 'imgs' => $proImgs,
                 'created_date' => $pro->pivot->created_date,
                 'amount' => $pro->pivot->amount,
@@ -76,7 +84,8 @@ class CartController extends Controller
         $u = Auth::user();
         foreach($request->carts_id as $cart_id){
             $cart = Carts::find($cart_id);
-
+            $cart->bought = true;
+            $cart->save();
             $buyingId = Str::random(30);
             $buying = Buyings::find($buyingId);
             while($buying != null){
@@ -89,7 +98,7 @@ class CartController extends Controller
                 'phone'=> $request->phone,
                 'id'=> $buyingId, 
                 'created_date'=> date('Y-m-d H:i:s')
-                ]);
+            ]);
         }
         return response()->json(['code'=>200,'message'=>'success']);
     }
@@ -111,7 +120,13 @@ class CartController extends Controller
             $cart = Carts::find($cart_id);
         }
 
-        $u->carts()->attach($request->pro_id, ['amount'=>$request->amount, 'created_date'=> date('Y-m-d H:i:s'), 'id' => $cart_id]);
+        $u->carts()->attach($request->pro_id, [
+            'amount'=>$request->amount,
+            'created_date'=> date('Y-m-d H:i:s'),
+            'id' => $cart_id,
+            'bought' => true,
+            'unit_sale_price' => Products::find($request->pro_id)
+        ]);
 
         $u->buyings()->attach($cart_id,[
             'address'=> $request->address,
@@ -121,5 +136,30 @@ class CartController extends Controller
         ]);
 
         return response()->json(['code'=>200,'message'=>'success']);
+    }
+
+
+    public function getBuyHistory(Request $request){
+        // totalPrice, quantity,unit price, title, img, buy time, total price
+        $carts = Auth::user()->buyings()->get();
+        $data = [];
+        foreach($carts as $c){
+            $pro = Products::find($c->p_id);
+            $eachResponse = [
+                'title' => $pro->title,
+                'buy_date_time' => $c->pivot->created_date,
+                'quantity' => $c->amount,
+                'unit_price' => $c->unit_sale_price,
+                'img' => ProductImgs::where('p_id', $pro->id)->first()->url,
+                'total_price' => $c->amount * $c->unit_sale_price
+            ];
+            $data[] = $eachResponse;
+        }
+        $responseObject = [
+            'code'  => 200,
+            'data' => $data
+        ];
+
+        return response()->json($responseObject);
     }
 }

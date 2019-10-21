@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $userId = Str::random(20);
-        $phone = rand(100000000,999999999);
+        $phone = "011111111";
         $user = DB::table('users')->find($userId);
         
         while($user != null){
@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
         }
 
         while($user != null){
-            $phone = rand(100000000,999999999);
             $user = DB::table('users')->find($userId);
         }
 

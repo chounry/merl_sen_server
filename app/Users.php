@@ -16,10 +16,10 @@ class Users extends Authenticatable
     protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = false;
-    protected $fillable = ['full_name','password','phone','profile_img','user_type_id','id'];
+    protected $fillable = ['full_name','password','phone','profile_img','user_type_id','id','unit_sale_price'];
 
     public function carts(){
-        return $this->belongsToMany('App\Products','carts','user_id','p_id')->withPivot('amount', 'created_date','id');
+        return $this->belongsToMany('App\Products','carts','user_id','p_id')->withPivot('amount', 'created_date','id','unit_sale_price','bought');
     }
 
     public function findForPassport($username) {
@@ -27,6 +27,6 @@ class Users extends Authenticatable
     }
 
     public function buyings(){
-        return $this->belongsToMany('App\Carts', 'buyings', 'user_id', 'cart_id')->withPivot('address', 'phone');
+        return $this->belongsToMany('App\Carts', 'buyings', 'user_id', 'cart_id')->withPivot('address', 'phone','created_date');
     }
 }

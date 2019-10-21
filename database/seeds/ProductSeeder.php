@@ -12,8 +12,10 @@ class ProductSeeder extends Seeder
     public function run()
     {
         // user : sometimes create sometimes not
+        $userTypeSellerId = DB::table('user_types')->where('name', 'Seller')->first()->id;
         $isCreate = rand(0,1);
-        if($isCreate == 1){
+
+        if($isCreate == 1 || count(DB::table('users')->get()) <= 3){
             $userId = Str::random(20);
             $phone = rand(100000000,999999999);
             $user = DB::table('users')->find($userId);
@@ -33,13 +35,17 @@ class ProductSeeder extends Seeder
                 'phone' => $phone,
                 'password' => \bcrypt('123456'),
                 'full_name' => Str::random(5),
-                'user_type_id' => DB::table('user_types')->where('name', 'Seller')->first()->id
+                'user_type_id' => $userTypeSellerId
             ]);
         }
         
         $users = DB::table('users')->get();
-        $userId = $users[rand(0, count($users) - 1)]->id;
+        $u = $users[rand(0, count($users) - 1)];
 
+        while($u->user_type_id != $userTypeSellerId){
+            $u = $users[rand(0, count($users) - 1)];
+        }
+        $userId = $u->id;
         $product = [
             'id' => Str::random(30),
             'sku'=> Str::random(10),

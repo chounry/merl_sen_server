@@ -17,6 +17,7 @@ class CreateCartsTable extends Migration
             $table->string('id', 20)->primary();
             $table->dateTime('created_date');
             $table->boolean('bought')->default(false);
+            $table->float('unit_sale_price', 10, 2);
             $table->integer('amount');
 
             $table->string('p_id', 30);

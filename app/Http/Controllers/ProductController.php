@@ -86,6 +86,7 @@ class ProductController extends Controller
         Log::info($newProducts);
 
         foreach($products as $pro){
+
             $img = ProductImgs::where('p_id', $pro->id)->first();
             $newPro = [
                 'id' => $pro->id,

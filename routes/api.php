@@ -28,6 +28,9 @@ Route::middleware('auth:api')->group(function(){
     // product
     Route::post('/product/list-by-user', 'ProductController@getListProductBySeller');
 
+    // buying
+    Route::post('/buying/get-buy-history', 'CartController@getBuyHistory');
+
 });
 
 // user
