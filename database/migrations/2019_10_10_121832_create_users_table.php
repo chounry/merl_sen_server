@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             $table->string('profile_img', 300)->default('users/merl_sen_user_default_user_profile.png');
 
-            $table->string('user_type_id',5);
+            $table->string('user_type_id',5); 
         });
     }
 

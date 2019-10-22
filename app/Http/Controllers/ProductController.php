@@ -33,6 +33,7 @@ class ProductController extends Controller
         $responsePro = [
             'id' => $product->id,
             'title' => $product->title,
+            'regular_price' => $product->regular_price,
             'description' => $product->description,
             'sale_price' => $product->sale_price,
             'in_stock_amount' => $product->in_stock_amount,
@@ -101,8 +102,16 @@ class ProductController extends Controller
         return response()->json($response);
     }
 
-    public function getListProductBySeller(Request $request){
+    public function getListOwnProduct(Request $request){
         $products = Products::where('user_id',Auth::user()->id)->get();
+        $products = [
+            'code' => 200,
+            'data' => $products,
+        ];
+        return response()->json($products);
+    }
+    public function getListProductBySeller(Request $request){
+        $products = Products::where('user_id',$reqeust->user_id)->get();
         $products = [
             'code' => 200,
             'data' => $products,

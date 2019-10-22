@@ -26,7 +26,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/product/buy-with-product', 'CartController@buyWithProduct');
 
     // product
-    Route::post('/product/list-by-user', 'ProductController@getListProductBySeller');
+    Route::post('/product/list-by-user', 'ProductController@getListOwnProduct');
 
     // buying
     Route::post('/buying/get-buy-history', 'CartController@getBuyHistory');
@@ -39,9 +39,11 @@ Route::post('user/login', 'MyAuth\LoginController@login');
 Route::get('user/unauthenticated', 'MyAuth\LoginController@unauthenticated')->name('unauthenticated');
 
 // product
+Route::post('/product/list-by-user', 'ProductController@getListProductBySeller');
 Route::get('/product/list', 'ProductController@getAll');
 Route::post('/product/detail', 'ProductController@getProductDetail');
 Route::post('/category/product', 'ProductController@getProductByCategory');
+
 
 // category
 Route::get('/category/list', 'CategoryController@getAllCategory');

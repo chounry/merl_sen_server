@@ -46,9 +46,27 @@ class ProductSeeder extends Seeder
             $u = $users[rand(0, count($users) - 1)];
         }
         $userId = $u->id;
-        $product = [
+        $products = [
+            [
             'id' => Str::random(30),
-            'sku'=> Str::random(10),
+            'sku'=> "Black,Rad,Blue,Camouflage",
+            'sale_price' => 179.99,
+            'regular_price' => 209.95,
+            'description'=> " Hear the bass, feel the bass, see the bass. Dual external passive radiators demonstrate just how powerful your speakers are
+            Splashproof means no more worrying about rain or spills; you can even clean it with running tap water. Just don't submerge it
+            Take Crystal clear calls from your speaker with the touch of a button thanks to the noise and Echo cancelling speakerphone
+            Built-in rechargeable li-ion battery supports up to 15 hours of playtime and charges devices via dual USB ports
+            Wirelessly connect up to 3 Smartphones or Tablets to the speaker and take turns playing earth-shaking, powerful stereo sound. To reset the unit, hold onto the power button and Bluetooth at the same time. ",
+            'title' => "JBL Xtreme Portable Wireless Bluetooth Speaker",
+            'in_stock_amount'=> 394,
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
             'sale_price' => rand(10, 500). '.'. rand(0, 99),
             'regular_price' => rand(10, 500). '.'. rand(0, 99),
             'description'=> Str::random(100),
@@ -58,14 +76,145 @@ class ProductSeeder extends Seeder
             'date'=>' 2019-10-08',
             'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
             'user_id' => $userId,
-        ];
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ],
+        [
+            'id' => Str::random(30),
+            'sku' => Str::random(10),
+            'sale_price' => rand(10, 500). '.'. rand(0, 99),
+            'regular_price' => rand(10, 500). '.'. rand(0, 99),
+            'description'=> Str::random(100),
+            'title' => Str::random(8),
+            'in_stock_amount'=> rand(0, 500),
+            'phone'=> '09123587' ,
+            'date'=>' 2019-10-08',
+            'address' => 'Corner Street 13 & 102, SangKat Wat Phnom, Khan Da...',
+            'user_id' => $userId,
+        ]
+    ];
 
         $imgUrls = ['car-default-1.jpg','car-default-2.jpg','car-default-3.jpg','car-default-4.jpg',
                 'computer-default-1.jpg','computer-default-2.jpg','computer-default-3.jpg','computer-default-4.jpeg',
                 'mouse-default-1.jpg','mouse-default-2.jpg','table-default-1.jpg','umbrella_first.jpb'
         ];
-
-        $pro_id = $product['id'];
+        foreach ($products as $product ) {
+            $pro_id = $product['id'];
         if(DB::table('products')->where('id',$pro_id)->first() == null){
             DB::table('products')->insert([
                 'id' => $pro_id,
@@ -118,5 +267,7 @@ class ProductSeeder extends Seeder
                 ]);
             }
         }
+        }
+        
     }
 }
