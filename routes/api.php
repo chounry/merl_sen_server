@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group(function(){
     // buying
     Route::post('/buying/get-buy-history', 'CartController@getBuyHistory');
 
+
 });
 
 // user
@@ -47,3 +48,6 @@ Route::post('/category/product', 'ProductController@getProductByCategory');
 
 // category
 Route::get('/category/list', 'CategoryController@getAllCategory');
+
+Route::get('/product/get-shop-list', 'UserController@getAll');
+
