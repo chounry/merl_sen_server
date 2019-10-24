@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 use App\Users;
 use App\UserTypes;
@@ -64,14 +65,14 @@ class RegisterController extends Controller
 
     public function edit(Request $request){
         $user_id = $request->id;
-        $user_instance = Users::find($user_id);
-        $img_location = "/storage/profile_imgs/";
+        $user_instance = Auth::user();
+        $img_location = "/storage/users/";
 
         if($request->hasFile('img'))
         {
             $file = $request->file('img');
             if($user_instance->img_loc != "default_user.png"){
-                $img_loc = 'public/profile_imgs/' . $user_instance->img_loc;
+                $img_loc = 'public/users/' . $user_instance->img_loc;
                 if(Storage::disk('local')->exists($img_loc))
                     Storage::disk('local')->delete($img_loc);
             }
@@ -79,19 +80,32 @@ class RegisterController extends Controller
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
             $fileNameToStore = $fileName.'_'.time().'.'.$extension;
-            $path = $file->storeAs('public/profile_imgs', $fileNameToStore);
+            $path = $file->storeAs('public/users', $fileNameToStore);
             
             // save image path 
             $user_instance->img_loc = $fileNameToStore;
         }
 
         if($user_instance != null){
-            $user_instance->fname = $request->fname;
-            $user_instance->lname = $request->lname;
+            $user_instance->full_name = $request->full_name;
             $user_instance->phone = $request->phone;
-            $user_instance->save();
-            return response()->json(["status"=>"success"]);
+            try{
+                $user_instance->save();
+            }catch (\Exception $e){
+                return response()->json([
+                        "code" => 500,
+                        "message"=>"Phone number already exist",
+                ]);
+            }
+            
+            return response()->json([
+                "code" => 200,
+                "message"=>"success"
+            ]);
         }
-        return \response()->json(["status"=>"falid"]);
+        return \response()->json([
+            "code" => 500,
+            "message"=> "fail"
+        ]);
     }
 }

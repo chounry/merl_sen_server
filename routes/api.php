@@ -17,6 +17,7 @@ Route::middleware('auth:api')->group(function(){
 
     // user
     Route::post('/user/get','MyAuth\LoginController@getUser');
+    Route::post('/user/edit','MyAuth\RegisterController@edit');
     
     // cart
     Route::post('/cart/add', 'CartController@insertCart');

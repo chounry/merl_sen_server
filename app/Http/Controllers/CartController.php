@@ -125,7 +125,7 @@ class CartController extends Controller
             'created_date'=> date('Y-m-d H:i:s'),
             'id' => $cart_id,
             'bought' => true,
-            'unit_sale_price' => Products::find($request->pro_id)
+            'unit_sale_price' => Products::find($request->pro_id)->sale_price
         ]);
 
         $u->buyings()->attach($cart_id,[

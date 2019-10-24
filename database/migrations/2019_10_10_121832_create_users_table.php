@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone')->unique();
             $table->string('profile_img', 300)->default('users/merl_sen_user_default_user_profile.png');
-
+            $table->string('cover_img', 300)->default('users/merl_sen_user_default_cover_img.jpg');
             $table->string('user_type_id',5); 
         });
     }

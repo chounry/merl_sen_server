@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Products;
 use App\ProductImgs;
 use App\Categories;
+use App\Users;
 
 class ProductController extends Controller
 {
@@ -111,11 +112,26 @@ class ProductController extends Controller
         return response()->json($products);
     }
     public function getListProductBySeller(Request $request){
-        $products = Products::where('user_id',$reqeust->user_id)->get();
-        $products = [
-            'code' => 200,
-            'data' => $products,
+        $user = Users::select('id', 'full_name','phone', 'profile_img','cover_img')->find($request->user_id);
+        $products = Products::select( 'id', 'title','in_stock_amount', 'sale_price')->where('user_id',$request->user_id)->get();
+        $user->profile_img = '/storage/' . $user->profile_img;
+        $user->cover_img = '/storage/' . $user->cover_img;
+        $newProducts = [];
+
+        foreach($products as $pro){
+            $pro['imgs'] = array(ProductImgs::where('p_id', $pro->id)->first()->url);
+        }
+
+        $data = [
+            "shop" => $user,
+            "products" => $products
         ];
-        return response()->json($products);
+
+        $response = [
+            'code' => 200,
+            'data' => $data
+        ];
+        return response()->json($response);
     }
 }
+                       
