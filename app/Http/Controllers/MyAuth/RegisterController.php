@@ -87,8 +87,12 @@ class RegisterController extends Controller
         }
 
         if($user_instance != null){
-            $user_instance->full_name = $request->full_name;
-            $user_instance->phone = $request->phone;
+            if($request->full_name){
+                $user_instance->full_name = $request->full_name;
+            }
+            if($request->phone){
+                $user_instance->phone = $request->phone;
+            }
             try{
                 $user_instance->save();
             }catch (\Exception $e){
