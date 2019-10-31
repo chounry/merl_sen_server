@@ -15,6 +15,7 @@ class CreateBuyingsTable extends Migration
     {
         Schema::create('buyings', function (Blueprint $table) {
             $table->string('id', 30)->unique();
+            $table->string('full_name');
             $table->dateTime('created_date');
             $table->string('address');
             $table->string('phone');

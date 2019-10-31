@@ -94,6 +94,7 @@ class CartController extends Controller
             }
 
             $u->buyings()->attach($cart->id,[
+                'full_name' => $request->full_name,
                 'address'=> $request->address,
                 'phone'=> $request->phone,
                 'id'=> $buyingId, 
@@ -129,6 +130,7 @@ class CartController extends Controller
         ]);
 
         $u->buyings()->attach($cart_id,[
+            'full_name' => $request->full_name,
             'address'=> $request->address,
             'phone'=> $request->phone,
             'id'=> $buyingId, 
