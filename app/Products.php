@@ -9,6 +9,7 @@ class Products extends Model
     //
     protected $primaryKey = 'id';
     public $incrementing = false;
+    public $timestamps = false;
 
     public function productImgs(){
         return $this->hasMany('App\ProductImgs','p_id');

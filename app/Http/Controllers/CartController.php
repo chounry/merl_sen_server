@@ -21,6 +21,14 @@ class CartController extends Controller
         if(!$pro->exists())
             return response()->json(['code'=>'500', 'message'=>"Product doesn't exists"]);
 
+        if($pro->in_stock_amount < $request->amount){
+            return response()->json([
+                'code' => 422,
+                'msg' => 'The in stock amount is not enough',
+                'data' => null
+            ]);
+        }
+
         $cart = Carts::where('p_id', $pro->id)->where('user_id',Auth::user()->id)->first();
         if($cart != null && $cart->bought == 0){
             $cart->amount = $cart->amount + $request->amount;
@@ -81,8 +89,23 @@ class CartController extends Controller
     }
 
     public function buyWithCarts(Request $request){
+        Log::info($request);
         $u = Auth::user();
         foreach($request->carts_id as $cart_id){
+            $cart = Carts::find($cart_id);
+            $product = Products::find($cart->p_id);
+            if($cart->amount > $product->in_stock_amount){
+                return \response()->json([
+                    'code' => 422,
+                    'msg' => 'The in stock amount is not enough',
+                    'data' => null
+                ]);
+            }
+        }
+
+
+        foreach($request->carts_id as $cart_id){
+            // this loop will insert to buyging table
             $cart = Carts::find($cart_id);
             $cart->bought = true;
             $cart->save();
@@ -109,10 +132,25 @@ class CartController extends Controller
 
         $buyingId = Str::random(30);
         $buying = Buyings::find($buyingId);
+        $product = Products::find($request->pro_id);
         while($buying != null){
             $buyingId = Str::random(30);
             $buying = Buyings::find($buyingId);
         }
+
+        // change the in stock amount
+
+        if($product->in_stock_amount < $request->amount){
+            return response()->json([
+                'code' => 422,
+                'msg' => 'The in stock amount is not enough',
+                'data' => null
+            ]);
+        }
+
+        // else minus the in stock amount
+        $product->in_stock_amount = $product->in_stock_amount - $request->amount;
+        $product->save();
 
         $cart_id = Str::random(20);
         $cart = Carts::find($cart_id);
@@ -126,7 +164,7 @@ class CartController extends Controller
             'created_date'=> date('Y-m-d H:i:s'),
             'id' => $cart_id,
             'bought' => true,
-            'unit_sale_price' => Products::find($request->pro_id)->sale_price
+            'unit_sale_price' => $product->sale_price
         ]);
 
         $u->buyings()->attach($cart_id,[
