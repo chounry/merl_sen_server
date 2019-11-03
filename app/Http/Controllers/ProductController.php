@@ -44,18 +44,20 @@ class ProductController extends Controller
 
         $response = [];
         $relatedProducts = [];
-
         // get related product
         foreach($productCategories as $proCat){
+
             $products = Categories::find($proCat->id)->products()->take(5)->get();
             foreach($products as $pro){
-
-                if($pro->id != $product->id)
+                Log::info($pro->id .' '. $product->id);
+                if($pro->id == $product->id){
                     continue;
+                }
 
                 $productImgs = ProductImgs::select('url')->where('p_id', $pro->id)->first(); // get imgs of only product
                 
                 $eachRelatedPro = [
+                    'id' => $pro->id,
                     'title' => $pro->title,
                     'description' => $pro->description,
                     'sale_price' => $pro->sale_price,
