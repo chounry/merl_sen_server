@@ -38,7 +38,8 @@ class ProductController extends Controller
             'description' => $product->description,
             'sale_price' => $product->sale_price,
             'in_stock_amount' => $product->in_stock_amount,
-            'imgs' => $arrayOfImg
+            'imgs' => $arrayOfImg,
+            'shop_id' => $product->user_id,
         ];
         $productCategories = $product->categories()->get();
 

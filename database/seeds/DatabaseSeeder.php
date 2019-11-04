@@ -24,11 +24,14 @@ class DatabaseSeeder extends Seeder
 
         // Category
         $categories = ['Electronic', 'Furniture', 'Cosmetics','Clothes','Sport'];
+        //                  1              2            3          4       5
+        $i = 1;
         foreach($categories as $cat){
             DB::table('categories')->insert([
-                'id' => Str::random(5),
+                'id' => $i,
                 'name' => $cat
             ]); 
+            $i++;
         }
 
 
