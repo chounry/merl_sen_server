@@ -129,7 +129,6 @@ class CartController extends Controller
 
     public function buyWithProduct(Request $request){
         $u = Auth::user();
-
         $buyingId = Str::random(30);
         $buying = Buyings::find($buyingId);
         $product = Products::find($request->pro_id);
@@ -137,9 +136,7 @@ class CartController extends Controller
             $buyingId = Str::random(30);
             $buying = Buyings::find($buyingId);
         }
-
         // change the in stock amount
-
         if($product->in_stock_amount < $request->amount){
             return response()->json([
                 'code' => 422,
@@ -147,7 +144,6 @@ class CartController extends Controller
                 'data' => null
             ]);
         }
-
         // else minus the in stock amount
         $product->in_stock_amount = $product->in_stock_amount - $request->amount;
         $product->save();
@@ -158,7 +154,6 @@ class CartController extends Controller
             $cart_id = Str::random(20);
             $cart = Carts::find($cart_id);
         }
-
         $u->carts()->attach($request->pro_id, [
             'amount'=>$request->amount,
             'created_date'=> date('Y-m-d H:i:s'),
@@ -166,7 +161,6 @@ class CartController extends Controller
             'bought' => true,
             'unit_sale_price' => $product->sale_price
         ]);
-
         $u->buyings()->attach($cart_id,[
             'full_name' => $request->full_name,
             'address'=> $request->address,
@@ -174,7 +168,6 @@ class CartController extends Controller
             'id'=> $buyingId, 
             'created_date'=> date('Y-m-d H:i:s')
         ]);
-
         return response()->json(['code'=>200,'message'=>'success']);
     }
 
