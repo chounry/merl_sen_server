@@ -14,17 +14,33 @@ class UserController extends Controller
         $users = Users::where('user_type_id', UserTypes::where('name','Seller')->first()->id)->get();
         $data = [];
 
+
         foreach($users as $u){
-            $products = Products::where('user_id', $u->id)->get()->take(3);
-            $imgs = [];
-            foreach($products as $pro){
-                $imgs[] = ProductImgs::where('p_id', $pro->id)->first()->url;
+            if(count($u->products()->get()) == 0)   {
+                continue;
             }
+            $products = Products::where('user_id', $u->id)->get();  
+            $allImgUrl = [];
+            foreach($products as $pro){
+                $size = 0;
+                $imgs = ProductImgs::where('p_id', $pro->id)->get();
+                foreach ($imgs as $value) {
+                    # code...
+                    $size++;
+                    if($size > 3){
+                        break;
+                    }
+                    $allImgUrl[] = $value->url;
+                }
+            }
+
+            
+
             $shop = [
                 "user_id" => $u->id,
                 "full_name" =>$u->full_name,
-                "profile_img" =>'/storage/' . $u->profile_img,
-                "pro_imgs" =>  $imgs,
+                "profile_img" => $u->profile_img,
+                "pro_imgs" =>  $allImgUrl,
             ];
             $data[] = $shop;
         }

@@ -29,4 +29,8 @@ class Users extends Authenticatable
     public function buyings(){
         return $this->belongsToMany('App\Carts', 'buyings', 'user_id', 'cart_id')->withPivot('address', 'phone','created_date','full_name');
     }
+
+    public function products(){
+        return $this->hasMany('App\Products','user_id');
+    }
 }

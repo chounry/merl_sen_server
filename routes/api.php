@@ -26,9 +26,6 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/product/buy-with-cart', 'CartController@buyWithCarts');
     Route::post('/product/buy-with-product', 'CartController@buyWithProduct');
 
-    // product
-    Route::post('/product/list-by-user', 'ProductController@getListOwnProduct');
-
     // buying
     Route::post('/buying/get-buy-history', 'CartController@getBuyHistory');
 
